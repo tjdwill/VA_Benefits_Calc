@@ -3,7 +3,7 @@
 Created on Tue Nov 29 15:48:22 2022
 @title: VA Benefits Calculator
 @author: Tj
-@date: 29 November 2022
+@date: 19 July 2023
 @description: Takes user arguments as percentages and calculates total
 VA Benefits percentage based on table at https://www.benefits.va.gov/compensation/rates-index.asp
 
@@ -18,43 +18,83 @@ NOTE: Due to floating-point behavior, Python rounds to nearest
 """ Rounding Trick (not used, but useful to learn how to implement a "ceil"):
 https://stackoverflow.com/questions/26454649/python-round-up-to-the-nearest-ten"""
 
-
-import numpy as np
-import sys
+import os
 
 
-def vaCalc(p1, p2)->float:
-    return ((p1 + p2) - (p1 * p2)).round(2)
-
-
-if __name__ == "__main__":
-    # Get line arguments
-    num_args = len(sys.argv)
-    if num_args > 2:
-        args = sys.argv
-        values = np.empty(num_args - 1)
-        
-        # Populate array
-        for i in range(1, num_args):
-            values[i-1] = float(args[i])
+def clear_console():
+    """
+    Clears terminal window
     
-        values = np.flip(np.sort(values))  # sort array greatest to least
-        values = values * (10 ** -2)
-        
-        # Calculate percentages
-        output = values[0] 
-        for j in range(values.shape[0] - 1):
-            output = vaCalc(output, values[j +1])
-            # print(output)
-        # Prep print-out
-        output = int((output * 100).round(0))
-        
-        if output % 10 < 5:
-            vaPert = int(output / 10) * 10
+    Source:
+    https://stackoverflow.com/questions/2084508/clear-terminal-in-python
+    """
+    os.system('cls' if os.name == 'nt' else 'clear')
+    
+    
+def vaCalc(p1: float, p2: float) -> float:
+    """Returns the VA Table value given two percentages."""
+    return round((p1 + p2) - (p1 * p2), 2)
+
+
+def main():
+    """
+    Loops until a valid input is obtained. 
+    
+    Performs calculation on provided values and outputs them to the console.
+    """
+    clear_console()
+    print("Total VA Percentage Calculator")
+    print("Creator: Terrance Williams\n")
+    print('\nVA Benefits calculation based on the table at'
+          '\nhttps://www.benefits.va.gov/compensation/rates-index.asp\n')
+          
+    valid = False
+    while not valid:
+        percentages = input("Please input your VA percentages "
+                            "(ex. \"10 40 20 50\" etc.):\n>>> ").split()
+        try:
+            percentages = [int(num) for num in percentages]
+            if not percentages:
+                raise IndexError
+            if not all((0 <= x <= 100 for x in percentages)):
+                raise ValueError
+        except ValueError:
+            print("\nError: All entries must be numbers between 0 and 100 (inclusive)\n")
+        except IndexError:
+            print("\nError: Must include at least one number.\n")
         else:
-            vaPert = int((output + 10) / 10) * 10
-    
-        print(f'\nVA Table Percentage is {output}.\nBenefits Garnered: \
-{vaPert}% Compensation')
+            valid = True
+            percentages = sorted([num/100 for num in percentages], reverse=True)
+        
+    # Calculate percentages
+    output = percentages[0]
+    for j in range(len(percentages) - 1):
+        output = vaCalc(output, percentages[j + 1])
+        
+    # Prep print-out
+    output = int(round(output * 100))
+
+    if output % 10 < 5:
+        vaPert = int(output / 10) * 10
     else:
-        print("Not enough arguments.")
+        vaPert = int((output + 10) / 10) * 10
+        
+    # Print the Information.
+    print(f'\nVA Table Value is {output}.\n'
+          f'Benefits Garnered: {vaPert}% Compensation')
+    
+    
+if __name__ == "__main__":
+    
+    """
+    Allow the user to reuse the program without manually initializing it again.
+    """
+    exiting = False
+    while not exiting:
+        main()
+        retry = input("\nRun program again? (y/n): ").lower()
+        if not(retry == 'y' or retry == "yes"):
+            exiting = True
+        else:
+            print()
+
