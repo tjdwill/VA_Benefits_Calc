@@ -1,5 +1,13 @@
 # VA Benefits Calculator
-VA Benefits Calculator is a command-line program that allows the user to determine the extent of their VA coverage or experiment to see what coverage a given combination produces.
+VA Benefits Calculator is a command-line program that allows the user to estimate the extent of their VA coverage or experiment to see what coverage a given combination produces.
+
+---
+
+### Disclaimer
+
+The VA Benefits Calculator is not affiliated with the U.S. Department of Veterans Affairs and is intended for **educational purposes only**. Any estimate displayed is unofficial and should not be construed as an official result.
+
+---
 
 ## How to Use
 
