@@ -1,5 +1,6 @@
 # VA Benefits Calculator
 VA Benefits Calculator is a command-line program that allows the user to estimate the extent of their VA coverage or experiment to see what coverage a given combination produces.
+This calculated **combined disability rating** (the percentage from 0 to 100)
 
 ---
 
