@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Nov 29 15:48:22 2022
 @title: VA Benefits Calculator
 @author: Tj
 @date: 19 July 2023
+@last_edited: 26 January 2024
 @description: Takes user arguments as percentages and calculates total
 VA Benefits percentage based on table at https://www.benefits.va.gov/compensation/rates-index.asp
 
@@ -19,6 +19,7 @@ NOTE: Due to floating-point behavior, Python rounds to nearest
 https://stackoverflow.com/questions/26454649/python-round-up-to-the-nearest-ten"""
 
 import os
+from sys import exit
 
 
 def clear_console():
@@ -47,13 +48,27 @@ def main():
     print("Creator: Terrance Williams\n")
     print('\nVA Benefits calculation based on the table at'
           '\nhttps://www.benefits.va.gov/compensation/rates-index.asp\n')
-          
+    print(
+    """
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+    """
+    )
     valid = False
+    quit_key = ['q', 'quit']
+    print(f"Enter '{quit_key[0]}' or '{quit_key[1]}' to exit.")
     while not valid:
-        percentages = input("Please input your VA percentages "
+        user_input = input("Please input your VA percentages "
                             "(ex. \"10 40 20 50\" etc.):\n>>> ").split()
+        if user_input[0].lower() in quit_key:
+            exit()
         try:
-            percentages = [int(num) for num in percentages]
+            percentages = [int(num) for num in user_input]
             if not percentages:
                 raise IndexError
             if not all((0 <= x <= 100 for x in percentages)):
