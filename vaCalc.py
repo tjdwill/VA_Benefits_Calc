@@ -65,6 +65,8 @@ def main():
     while not valid:
         user_input = input("Please input your VA percentages "
                             "(ex. \"10 40 20 50\" etc.):\n>>> ").split()
+        if not user_input:
+            continue
         if user_input[0].lower() in quit_key:
             exit()
         try:
